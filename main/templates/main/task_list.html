@@ -1,0 +1,50 @@
+{% extends 'main/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <div>
+        <h1>Hello, {{request.user|title}}</h1>
+        <div id="indicator-div">
+            <p id="indicator" style="margin:0px">You have <b>{{count}}</b> incomplete task{{count|pluralize:"s"}}</p>
+        </div>
+    </div>
+    {% if request.user.is_authenticated %}
+    <b><a class="log-a" href="{% url 'logout' %}"><svg xmlns="http://www.w3.org/2000/svg" style="margin-top: 12px;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></a></b>
+    {% else %}
+    <b><a class="log-a" href="{% url 'login' %}">Login</a></b>
+    {% endif %}
+
+</div>
+
+<div id="search-add-wrapper">
+    <form method="GET" style="margin-top: 0;display: flex;">
+        <input type="text" name='search-area' value="{{search_input}}" placeholder="Search for your tasks">
+        <input id="search-btn" class="button" id="search-btn" type="submit" value="&#8635;">
+    </form>
+    <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
+</div>
+
+<div class="task-items-wrapper">
+    {% for task in tasks %}
+        <div class="task-wrapper">
+            {% if task.complete %}
+                <div class="task-title">
+                    <div class="task-complete-icon"></div>
+                    <s><a>{{task}}</a></s>
+                </div>
+                <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+            {% else %}
+            <div class="task-title">
+                <div class="task-incomplete-icon"></div>
+                <a style="max-width: 100px;" href="{% url 'task' task.id %}">{{task}}</a>
+            </div>
+            <a class="edit-btn" href="{% url 'task-edit' task.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" class="bi bi-pencil-square" viewBox="0 0 16 16"> <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/> <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/> </svg></a>
+            <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+            {% endif %}
+        </div>
+
+    {% empty %}
+    <h2 style="color: rgba(41, 41, 41, 0.3);padding: 0 0 10px 5px;cursor: default;">Nothing to track</h3>
+    {% endfor %}
+</div>
+{% endblock content %}

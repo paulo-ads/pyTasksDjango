@@ -1,0 +1,20 @@
+{% extends 'main/main.html' %}
+{% block content %}
+
+<div class="header-bar">
+    <div>
+        <a class="back-btn" href="{% url 'tasks' %}">&#10229;</a>
+        <h1>{{task.title}}</h1>
+    </div>
+</div>
+
+<div class="task-items-wrapper">
+        <div class="task-wrapper" style="font-size: 1.1em;">
+                <p><b>Task Description:</b> {{task.description}}</p><br>
+        </div>
+        <div class="task-wrapper" style="font-size: 1.1em;">
+            <p><b>Created at:</b> {{task.created}}</p>
+            <h3 style="color: rgb(228, 0, 0); font-weight: bold; margin: 0 0 0 15px; cursor: default;">Incomplete</h3>
+    </div>
+</div>
+{% endblock content %}
